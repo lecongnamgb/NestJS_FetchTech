@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { CreateTodoItemDTO } from './dto/create-todoItem.dto';
 import { TodoItem } from './../../schemas/todoItem.schema';
 import { TodoAppService } from './todo_app.service';
@@ -9,6 +10,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 
 @Controller('todo-app')
@@ -25,6 +27,7 @@ export class TodoAppController {
     return this.todoAppService.getItem(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/createItem')
   async createItem(
     @Body() createTodoItemDTO: CreateTodoItemDTO,
@@ -32,11 +35,13 @@ export class TodoAppController {
     return this.todoAppService.createItem(createTodoItemDTO);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/delete/:id')
   async deleteItem(@Param('id') id: string): Promise<string> {
     return this.todoAppService.deleteItem(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('/update/:id')
   async updateItem(
     @Body() createTodoItemDTO: CreateTodoItemDTO,

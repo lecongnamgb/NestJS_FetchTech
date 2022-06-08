@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateUserDTO } from './modules/users/dto/create-user.dto';
 
@@ -11,8 +12,20 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post('/signIn')
+  @Post('/signin')
   async signIn(@Body() createUserDTO: CreateUserDTO): Promise<any> {
     return this.appService.signIn(createUserDTO);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/profile')
+  async getProfile(@Req() req: any): Promise<any> {
+    console.log(req);
+    return 'oke';
+  }
+
+  @Post('/auth/login')
+  async logIn(@Body() createUserDTO: CreateUserDTO): Promise<any> {
+    return this.appService.logIn(createUserDTO);
   }
 }

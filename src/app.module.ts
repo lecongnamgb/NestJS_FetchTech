@@ -1,3 +1,4 @@
+import { TodoAppModule } from './modules/todo_app/todo_app.module';
 import { UserSchema } from './schemas/user.schema';
 import { UsersModule } from './modules/users/users.module';
 import { Module } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { AuthModule } from './modules/auth/auth.module';
       signOptions: { expiresIn: '1h' },
     }),
     AuthModule,
+    TodoAppModule,
   ],
   controllers: [AppController],
   providers: [AppService],

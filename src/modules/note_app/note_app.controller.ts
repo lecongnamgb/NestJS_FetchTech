@@ -1,32 +1,33 @@
-import { ValidationPipe } from './../../pipes/validation.pip';
-import { CreateNoteItemDTO } from './dto/create-noteItem.dto';
-import { Note_item } from './../../schemas/note_item.schema';
+import { AuthGuard } from './../../guards/auth.guard';
 import {
+  Body,
   Controller,
   Delete,
   Get,
   Param,
   Post,
   Put,
-  Body,
-  ParseIntPipe,
-  HttpStatus,
-  UsePipes,
+  UseGuards,
 } from '@nestjs/common';
+import { Note_item } from './../../schemas/note_item.schema';
+import { CreateNoteItemDTO } from './dto/create-noteItem.dto';
 import { NoteAppService } from './note_app.service';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('note-app')
 export class NoteAppController {
   constructor(private readonly noteAppService: NoteAppService) {}
 
   @Get('items')
+  @Roles('admin')
+  @UseGuards(AuthGuard)
   async getAllItems(): Promise<Note_item[]> {
     return this.noteAppService.getAllItems();
   }
 
   @Get('items/:id')
   async getItem(
-    @Param('id', ValidationPipe)
+    @Param('id')
     id: number,
   ): Promise<Note_item> {
     return this.noteAppService.getItem(id);

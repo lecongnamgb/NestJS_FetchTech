@@ -1,3 +1,4 @@
+import { RolesGuard } from './modules/auth/roles.guard';
 import { TodoAppModule } from './modules/todo_app/todo_app.module';
 import { UserSchema } from './schemas/user.schema';
 import { UsersModule } from './modules/users/users.module';
@@ -23,7 +24,7 @@ import { AuthModule } from './modules/auth/auth.module';
     TodoAppModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RolesGuard],
   exports: [AppService],
 })
 export class AppModule {}

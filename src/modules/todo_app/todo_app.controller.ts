@@ -1,7 +1,3 @@
-import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { CreateTodoItemDTO } from './dto/create-todoItem.dto';
-import { TodoItem } from './../../schemas/todoItem.schema';
-import { TodoAppService } from './todo_app.service';
 import {
   Body,
   Controller,
@@ -11,7 +7,13 @@ import {
   Patch,
   Post,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
+import { CreateTodoItemDTO } from './dto/create-todoItem.dto';
+import { TodoAppService } from './todo_app.service';
 
 @Controller('todo-app')
 export class TodoAppController {
@@ -28,6 +30,7 @@ export class TodoAppController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin, Role.User)
   @Post('/createItem')
   async createItem(
     @Body() createTodoItemDTO: CreateTodoItemDTO,
@@ -36,12 +39,14 @@ export class TodoAppController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   @Delete('/delete/:id')
   async deleteItem(@Param('id') id: string): Promise<string> {
     return this.todoAppService.deleteItem(id);
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   @Patch('/update/:id')
   async updateItem(
     @Body() createTodoItemDTO: CreateTodoItemDTO,

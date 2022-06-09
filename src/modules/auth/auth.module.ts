@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Module({
-  providers: [AuthService],
-  imports: [JwtStrategy],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

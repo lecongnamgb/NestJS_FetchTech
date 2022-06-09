@@ -57,7 +57,7 @@ export class AppService {
       if (!isValidPassword) {
         return 'Password is incorrect';
       }
-      const payload = { username: user.username };
+      const payload = { username: user.username, role: user.role };
       return {
         message: 'LogIn successfully',
         accessToken: this.jwtService.sign(payload),
